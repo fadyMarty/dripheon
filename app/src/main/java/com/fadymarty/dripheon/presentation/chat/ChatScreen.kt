@@ -109,7 +109,7 @@ private fun ChatScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface),
+                        .background(MaterialTheme.colorScheme.background),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -199,6 +199,7 @@ private fun MessageBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
             .padding(
                 horizontal = 16.dp,
                 vertical = 8.dp

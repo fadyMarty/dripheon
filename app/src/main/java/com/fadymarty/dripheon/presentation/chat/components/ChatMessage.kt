@@ -28,7 +28,7 @@ fun ChatMessage(
     ) {
         Text(
             text = message.content,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }

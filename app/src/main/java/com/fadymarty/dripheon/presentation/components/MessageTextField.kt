@@ -28,7 +28,7 @@ fun MessageTextField(
         onValueChange = onValueChange,
         maxLines = maxLines,
         textStyle = MaterialTheme.typography.bodyLarge.copy(
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onBackground
         ),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
     )
