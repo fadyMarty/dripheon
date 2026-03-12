@@ -9,15 +9,17 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -25,6 +27,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -68,22 +71,34 @@ private fun ChatScreen(
     }
 
     LaunchedEffect(state.messages.size) {
-        if (isScrolledToNewest) lazyListState.animateScrollToItem(0)
+        if (isScrolledToNewest) {
+            lazyListState.animateScrollToItem(0)
+        }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
-            .imePadding()
-    ) {
-        ChatTopAppBar(
-            isRefreshing = state.isRefreshing
-        )
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            ChatTopAppBar(
+                isRefreshing = state.isRefreshing
+            )
+        },
+        bottomBar = {
+            MessageBar(
+                message = state.message,
+                onMessageChange = {
+                    onEvent(ChatEvent.OnMessageChange(it))
+                },
+                onSendMessage = {
+                    onEvent(ChatEvent.OnSendMessage)
+                }
+            )
+        }
+    ) { innerPadding ->
         AnimatedContent(
             modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+                .fillMaxSize()
+                .padding(innerPadding),
             targetState = state.isLoading,
             transitionSpec = {
                 (fadeIn() + scaleIn())
@@ -125,33 +140,24 @@ private fun ChatScreen(
                                     Arrangement.End
                                 } else Arrangement.Start
                             ) {
-                                ChatMessage(
-                                    message = message
-                                )
+                                ChatMessage(message = message)
                             }
                         }
                     }
                 }
             }
         }
-        MessageBar(
-            message = state.message,
-            onMessageChange = {
-                onEvent(ChatEvent.OnMessageChange(it))
-            },
-            onSendMessage = {
-                onEvent(ChatEvent.OnSendMessage)
-            }
-        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ChatTopAppBar(
+    modifier: Modifier = Modifier,
     isRefreshing: Boolean,
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -185,16 +191,22 @@ private fun ChatTopAppBar(
 
 @Composable
 private fun MessageBar(
+    modifier: Modifier = Modifier,
     message: String,
     onMessageChange: (String) -> Unit,
     onSendMessage: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 16.dp,
                 vertical = 8.dp
+            )
+            .windowInsetsPadding(
+                WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                )
             ),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Bottom
