@@ -8,5 +8,5 @@ interface ChatRepository {
     fun observeMessageEvents(): Flow<WebSocketEvent<Message>>
     fun connect()
     fun disconnect()
-    fun sendMessage(content: String): Boolean
+    fun sendMessage(content: String): Message?
 }

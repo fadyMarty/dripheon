@@ -29,7 +29,10 @@ class ChatRepositoryImpl(
         chatRemoteDataSource.disconnect()
     }
 
-    override fun sendMessage(content: String): Boolean {
-        return chatRemoteDataSource.sendMessage(content)
+    override fun sendMessage(content: String): Message? {
+        val isSuccess = chatRemoteDataSource.sendMessage(content)
+        return if (isSuccess) {
+            content.toMessage(isFromLocalUser = true)
+        } else null
     }
 }

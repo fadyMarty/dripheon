@@ -1,9 +1,9 @@
 package com.fadymarty.dripheon.presentation.chat
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fadymarty.dripheon.common.util.WebSocketEvent
-import com.fadymarty.dripheon.data.mapper.toMessage
 import com.fadymarty.dripheon.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,23 +26,19 @@ class ChatViewModel(
 
     fun onEvent(event: ChatEvent) {
         when (event) {
-            is ChatEvent.OnMessageChange -> {
-                _state.update {
-                    it.copy(message = event.message)
-                }
-            }
-            ChatEvent.OnSendMessage -> {
+            ChatEvent.OnSendMessageClick -> {
                 viewModelScope.launch {
-                    val message = _state.value.message.toMessage(
-                        isFromLocalUser = true
+                    val message = chatRepository.sendMessage(
+                        _state.value.messageTextFieldState.text.toString()
                     )
-                    _state.update {
-                        it.copy(
-                            message = "",
-                            messages = it.messages + message
-                        )
+                    message?.let {
+                        _state.update {
+                            it.copy(
+                                messages = it.messages + message
+                            )
+                        }
+                        _state.value.messageTextFieldState.clearText()
                     }
-                    chatRepository.sendMessage(message.content)
                 }
             }
         }

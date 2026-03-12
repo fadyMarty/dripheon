@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -86,12 +88,9 @@ private fun ChatScreen(
         },
         bottomBar = {
             MessageBar(
-                message = state.message,
-                onMessageChange = {
-                    onEvent(ChatEvent.OnMessageChange(it))
-                },
+                messageState = state.messageTextFieldState,
                 onSendMessage = {
-                    onEvent(ChatEvent.OnSendMessage)
+                    onEvent(ChatEvent.OnSendMessageClick)
                 }
             )
         }
@@ -193,8 +192,7 @@ private fun ChatTopAppBar(
 @Composable
 private fun MessageBar(
     modifier: Modifier = Modifier,
-    message: String,
-    onMessageChange: (String) -> Unit,
+    messageState: TextFieldState,
     onSendMessage: () -> Unit,
 ) {
     Row(
@@ -215,14 +213,13 @@ private fun MessageBar(
     ) {
         MessageTextField(
             modifier = Modifier.weight(1f),
-            value = message,
-            onValueChange = onMessageChange,
-            maxLines = 4
+            state = messageState,
+            lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = 4)
         )
         DripheonFilledIconButton(
             icon = ImageVector.vectorResource(R.drawable.ic_arrow_upward),
             onClick = onSendMessage,
-            enabled = message.isNotBlank()
+            enabled = messageState.text.isNotBlank()
         )
     }
 }

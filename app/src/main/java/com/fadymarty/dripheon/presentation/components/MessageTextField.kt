@@ -4,6 +4,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,9 +16,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun MessageTextField(
     modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    maxLines: Int = Int.MAX_VALUE,
+    state: TextFieldState,
+    lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default
 ) {
     BasicTextField(
         modifier = modifier
@@ -24,9 +25,8 @@ fun MessageTextField(
             .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .animateContentSize()
             .padding(16.dp),
-        value = value,
-        onValueChange = onValueChange,
-        maxLines = maxLines,
+        state = state,
+        lineLimits = lineLimits,
         textStyle = MaterialTheme.typography.bodyLarge.copy(
             color = MaterialTheme.colorScheme.onBackground
         ),
