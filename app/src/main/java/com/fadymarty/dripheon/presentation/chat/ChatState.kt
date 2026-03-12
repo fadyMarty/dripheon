@@ -7,5 +7,5 @@ data class ChatState(
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
     val messages: List<Message> = emptyList(),
-    val messageTextFieldState: TextFieldState = TextFieldState()
+    val messageTextFieldState: TextFieldState = TextFieldState(),
 )

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun MessageTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
-    lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default
+    lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default,
 ) {
     BasicTextField(
         modifier = modifier

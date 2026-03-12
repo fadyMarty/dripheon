@@ -5,6 +5,7 @@ import com.fadymarty.dripheon.common.util.WebSocketEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -27,10 +28,10 @@ class ChatRemoteDataSourceImpl(
     override val events: SharedFlow<WebSocketEvent<String>>
         get() = _events.asSharedFlow()
 
-    private var reconnectJob: Job? = null
-    private var retryCount = 0
+    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private var retryCount = 0
+    private var reconnectJob: Job? = null
 
     private val listener = object : WebSocketListener() {
 
