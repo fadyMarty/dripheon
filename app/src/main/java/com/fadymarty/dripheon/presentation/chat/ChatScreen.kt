@@ -77,7 +77,6 @@ private fun ChatScreen(
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
         topBar = {
             ChatTopAppBar(
                 isRefreshing = state.isRefreshing
