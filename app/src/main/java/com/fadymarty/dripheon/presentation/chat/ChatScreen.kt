@@ -1,5 +1,6 @@
 package com.fadymarty.dripheon.presentation.chat
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -59,6 +60,7 @@ fun ChatScreen(
     )
 }
 
+@SuppressLint("FrequentlyChangingValue")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ChatScreen(
