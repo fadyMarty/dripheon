@@ -31,7 +31,7 @@ class ChatViewModel(
                     val message = chatRepository.sendMessage(
                         _state.value.messageState.text.toString()
                     )
-                    message?.let {
+                    if (message != null) {
                         _state.update {
                             it.copy(
                                 messages = it.messages + message
