@@ -57,17 +57,19 @@ class ChatViewModel(
                         )
                     }
                 }
+                is WebSocketEvent.Failure -> {
+                    if (!_state.value.isLoading) {
+                        _state.update {
+                            it.copy(isRefreshing = true)
+                        }
+                    }
+                }
                 WebSocketEvent.Open -> {
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isRefreshing = false
                         )
-                    }
-                }
-                WebSocketEvent.Loading -> {
-                    _state.update {
-                        it.copy(isRefreshing = true)
                     }
                 }
                 else -> Unit

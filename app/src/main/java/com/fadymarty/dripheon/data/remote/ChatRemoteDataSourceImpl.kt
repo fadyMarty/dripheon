@@ -1,5 +1,6 @@
 package com.fadymarty.dripheon.data.remote
 
+import android.util.Log
 import com.fadymarty.dripheon.BuildConfig
 import com.fadymarty.dripheon.common.util.WebSocketEvent
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +45,7 @@ class ChatRemoteDataSourceImpl(
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             super.onFailure(webSocket, t, response)
+            Log.e("ChatRemoteDataSource", t.toString())
             scope.launch {
                 _events.emit(WebSocketEvent.Failure(t))
             }
@@ -92,9 +94,6 @@ class ChatRemoteDataSourceImpl(
 
     private fun reconnectWithBackoff() {
         retryCount++
-        scope.launch {
-            _events.emit(WebSocketEvent.Loading)
-        }
         reconnectJob?.cancel()
         reconnectJob = scope.launch {
             val delayTime = 1000L * 2.0.pow(retryCount).toLong()

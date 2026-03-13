@@ -6,7 +6,6 @@ sealed interface WebSocketEvent<out T> {
     data object Open : WebSocketEvent<Nothing>
     data object Closing : WebSocketEvent<Nothing>
     data object Closed : WebSocketEvent<Nothing>
-    data object Loading : WebSocketEvent<Nothing>
 }
 
 inline fun <T, R> WebSocketEvent<T>.map(map: (T) -> R): WebSocketEvent<R> {
@@ -16,6 +15,5 @@ inline fun <T, R> WebSocketEvent<T>.map(map: (T) -> R): WebSocketEvent<R> {
         WebSocketEvent.Open -> WebSocketEvent.Open
         WebSocketEvent.Closing -> WebSocketEvent.Closing
         WebSocketEvent.Closed -> WebSocketEvent.Closed
-        WebSocketEvent.Loading -> WebSocketEvent.Loading
     }
 }
