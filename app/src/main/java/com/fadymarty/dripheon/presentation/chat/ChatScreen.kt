@@ -88,8 +88,8 @@ private fun ChatScreen(
         },
         bottomBar = {
             MessageBar(
-                messageState = state.messageTextFieldState,
-                onSendMessage = {
+                state = state.messageState,
+                onSendMessageClick = {
                     onEvent(ChatEvent.OnSendMessageClick)
                 }
             )
@@ -192,8 +192,8 @@ private fun ChatTopAppBar(
 @Composable
 private fun MessageBar(
     modifier: Modifier = Modifier,
-    messageState: TextFieldState,
-    onSendMessage: () -> Unit,
+    state: TextFieldState,
+    onSendMessageClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -213,13 +213,13 @@ private fun MessageBar(
     ) {
         MessageTextField(
             modifier = Modifier.weight(1f),
-            state = messageState,
+            state = state,
             lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = 4)
         )
         DripheonFilledIconButton(
             icon = ImageVector.vectorResource(R.drawable.ic_arrow_upward),
-            onClick = onSendMessage,
-            enabled = messageState.text.isNotBlank()
+            onClick = onSendMessageClick,
+            enabled = state.text.isNotBlank()
         )
     }
 }

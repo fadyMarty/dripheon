@@ -29,7 +29,7 @@ class ChatViewModel(
             ChatEvent.OnSendMessageClick -> {
                 viewModelScope.launch {
                     val message = chatRepository.sendMessage(
-                        _state.value.messageTextFieldState.text.toString()
+                        _state.value.messageState.text.toString()
                     )
                     message?.let {
                         _state.update {
@@ -37,7 +37,7 @@ class ChatViewModel(
                                 messages = it.messages + message
                             )
                         }
-                        _state.value.messageTextFieldState.clearText()
+                        _state.value.messageState.clearText()
                     }
                 }
             }
